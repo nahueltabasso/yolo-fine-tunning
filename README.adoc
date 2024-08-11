@@ -78,6 +78,7 @@ pipenv --python 3.9.6
 pipenv shell
 pipenv install
 pipenv run pip install git+https://github.com/IDEA-Research/GroundingDINO.git@df5b48a3efbaa64288d8d0ad09b748ac86f22671
+python setup.py
 
 === **Set up using docker**
 
