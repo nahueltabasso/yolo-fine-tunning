@@ -1,0 +1,7 @@
+/data/*
+/models/*
+/runs/*
+/YOLO_fine_tunning.egg-info/*
+
+/weigths/groundingdino_swint_ogc.pth
+/weigths/*

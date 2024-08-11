@@ -1,0 +1,63 @@
+# %%
+device = "cuda" if torch.cuda.is_available() else "cpu"
+device
+
+# %%
+MODEL_CONFIG_PATH = "./GroundingDINO_SwinT_OGC.py"
+WEIGHTS_PATH = "../../weigths/groundingdino_swint_ogc.pth"
+
+model = Model(model_config_path=MODEL_CONFIG_PATH,
+              model_checkpoint_path=WEIGHTS_PATH,
+              device=device)
+
+model
+
+# %%
+BOX_THRESHOLD = 0.35
+TEXT_THRESHOLD = 0.25
+TEXT_PROMPT = ["credit card"]
+
+# %%
+BASE_IMAGE_DIR = os.getenv('BASE_INPUT_DIR_IMAGES')
+BASE_OUTPUT_DIR_IMAGES = os.getenv('BASE_OUTPUT_DIR_IMAGES')
+BASE_OUTPUT_DIR_ANN = os.getenv('BASE_OUTPUT_DIR_ANN')
+
+IMAGES = os.listdir(BASE_IMAGE_DIR)
+
+IMAGES = [i for i in IMAGES if i != '.DS_Store']
+IMAGES
+
+# %%
+IMG_COUNT = 0
+
+for image in IMAGES:
+    path = os.path.join(BASE_IMAGE_DIR, image)
+    img = cv2.imread(filename=path)
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(img_rgb)
+    plt.title("Image before labelling by GroundingDINO")
+    plt.show()
+    detections = model.predict_with_classes(image=img,
+                                            classes=TEXT_PROMPT,
+                                            box_threshold=BOX_THRESHOLD,
+                                            text_threshold=TEXT_THRESHOLD)
+    box_annotator = sv.BoundingBoxAnnotator()
+    annotated_image = box_annotator.annotate(scene=img,
+                                            detections=detections)
+
+    plt.imshow(annotated_image)
+    plt.title("Image after inference")
+    plt.show()
+    print(f"DETECTIONS - {detections.xyxy}")
+    cxcywh = box_convert(boxes=torch.Tensor(detections.xyxy),
+                         in_fmt="xyxy",
+                         out_fmt="cxcywh")
+    output_path = os.path.join(BASE_OUTPUT_DIR_IMAGES, str(IMG_COUNT)+".jpg")
+    cv2.imwrite(output_path, img)
+    
+    ann_output_path = os.path.join(BASE_OUTPUT_DIR_ANN, str(IMG_COUNT)+".txt")
+    with open(ann_output_path, "w") as file:
+        for coords in cxcywh:
+            row = f"1 {coords[0]} {coords[1]} {coords[2]} {coords[3]}\n"
+            file.write(row)
+    IMG_COUNT += 1
