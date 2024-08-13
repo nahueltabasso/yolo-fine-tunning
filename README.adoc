@@ -1,8 +1,8 @@
 = **YOLO Fine-Tunning and Optimization for Credit Card Detections**
 
-This repository is intended to host the project of Fine-Tunning of **YOLOv10** model to detect credit cards on images. It used **FiftyOne** to manage the annotations and datasets and are integrated with tools as **CVAT** to the correction of annotations.
+This repository is intended to host the project of Fine-Tunning of **YOLOv10** model to detect credit cards on images. It used **FiftyOne** to manage the annotations and datasets and are integrated with tools such as **CVAT** for the correction of annotations.
 
-The main flux of this project including:
+The main flux of this project includes:
 
 * Automatic labeling of the dataset using **GroundingDINO**
 * Upload datasets to **FiftyOne**
@@ -31,13 +31,13 @@ The main flux of this project including:
 
 == **Getting Started**
 
-This project using `pipenv` to manage a python virtual environment and dependencies or using `docker` for this task. To set up this environment, follow the steps below 
+This project uses `pipenv` to manage a python virtual environment and dependencies, or uses `docker` for this task. To set up this environment, follow the steps below 
 
 [source,bash]
 git clone <>
 cd <repository name>
 
-First of all, need to create some directories and download some heights for our models
+First of all, it is needed to create some directories and download some heights for our models
 
 **Directory and weight for GroundingDINO**
 [source,bash]
@@ -54,9 +54,9 @@ mkdir models
 cd models
 wget -q https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov10n.pt
 
-Or you can download with this link link:https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov10n.pt[YOLOv10 Nano]
+Or you can download it with this link link:https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov10n.pt[YOLOv10 Nano]
 
-**NOTE:** Also, need to configure some enviroment variables:
+**NOTE:** Also, it is needed to configure some enviroment variables:
 [source,bash]
 BASE_INPUT_DIR_IMAGES=<value>
 BASE_OUTPUT_DIR_IMAGES=<value>
@@ -68,7 +68,7 @@ BASE_TEST_VIDEO_DIR=<value>
 
 === **Set up using pipenv**
 
-If not have `pipenv` installed, run the follow command:
+If you do not have `pipenv` installed, run the follow command:
 [source,bash]
 pip install pipenv
 
@@ -82,7 +82,7 @@ python setup.py
 
 === **Set up using docker**
 
-First, need to build the docker image with `docker-compose`, after up the image to create a container with all necessary to execute the different scripts.
+First, it is needed to build the docker image with `docker-compose`, after this put the image up to create a container with all the necessary to execute the different scripts.
 [source,bash]
 docker-compose build
 docker-compose up -d
@@ -102,6 +102,10 @@ python src/fiftyone/fo_load_ds.py --name <dataset_name>
 python src/fiftyone/fo_load_ds_cvat.py --name <dataset_name> --anno_key <anno_key> --project_name <cvat_project_name>
 
 ==== **Load annotations from CVAT to FiftyOne**
+First it is needed to define some enviroment variables
+[source,bash]
+export FIFTYONE_CVAT_USERNAME="username" && export FIFTYONE_CVAT_PASSWORD="********" && export FIFTYONE_CVAT_URL="https://cvat.com"
+
 [source,bash]
 python src/fiftyone/fo_load_annotations.py --name <dataset_name> --anno_key <anno_key>
 
@@ -124,9 +128,9 @@ python src/fine-tunning/inference_on_video.py --model <path_to_your_model> --ima
 
 **NOTE:** In this link you have the weights after a fine-tunning link:https://drive.google.com/file/d/1VxjmZVxBHcAtYlmpLu_SyohWW5UFVhEx/view?usp=drive_link[YOLOv10 Fine-Tunning]
 
-**NOTE:** In the follow page, is the report about this fine-tunning link:./docs/REPORT.adoc[Report].
+**NOTE:** In the following page, there is a report about this fine-tunning link:./docs/REPORT.adoc[Report].
 
-**NOTE:** To know more about YOLO and how to fine-tunning a YOLO model, visit this page link:https://docs.ultralytics.com/es/models/yolov10/[Ultralytics YOLOv10 Docs]
+**NOTE:** To know more about YOLO and how to fine-tunne a YOLO model visit this page link:https://docs.ultralytics.com/es/models/yolov10/[Ultralytics YOLOv10 Docs]
 
 == **Licence**
 This project was under https://opensource.org/license/mit/[MIT LICENSE] license.

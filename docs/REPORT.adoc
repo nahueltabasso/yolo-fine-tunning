@@ -73,15 +73,15 @@ The automatic credit card detection involves many challenges:
 
 == **3 Results**
 
-Rigorously evaluating the performance of our fine-tuned YOLOv10 model for credit card detection is critical to understand its effectiveness and areas for potential improvement. In this section, present a detailed analysis of the results obtained through various evaluation metrics and visualizations
+Evaluating rigorously the performance of our fine-tuned YOLOv10 model for credit card detection is critical to understand its effectiveness and areas for potential improvement. In this section, present a detailed analysis of the results obtained through various evaluation metrics and visualizations
 
 **The results presented below:**
 
-* **General Performance Metrics:** include metrics such as maP (mean Average Precision) with different thresholds of IoU (Intersection over Union), that permit evaluating the general precision of the model in the detection task.
+* **General Performance Metrics:** include metrics such as maP (mean Average Precision) with different thresholds of IoU (Intersection over Union), that permits evaluating the general precision of the model in the detection task.
 
-* **Class Metrics:** Our model only focuses on the detection of a specific class (credit card), so detailed metrics such as precision, recall and F1 score are shown for this particular class.
+* **Class Metrics:** Our model only focuses on the detection of a specific class (credit card), so detailed metrics such as precision, recall and F1-score are shown for this particular class.
 
-* **Confusion Matrix:** This visual tool help us to undestand the patterns of success and error of the model, to provide important information about its performance in different scenes.
+* **Confusion Matrix:** This visual tool helps us to undestand the patterns of success and error of the model, to provide important information about its performance in different scenes.
 
 === **3.1 Performance Metrics**
 
@@ -124,8 +124,8 @@ Below it shows main performance metrics obtained from our model
 
 <table>
     <tr>
-        <th>Métrica</th>
-        <th>Valor</th>
+        <th>Métric</th>
+        <th>Value</th>
     </tr>
     <tr>
         <td>mAP@0.5</td>
@@ -169,7 +169,7 @@ Below it shows main performance metrics obtained from our model
 </div>
 ++++
 
-The curve of precision show how much is the precision of our model when said that it find a credit card. A precision near to 1 along training means that most of the detections of the model are correct, with very few false positives.
+The curve of precision shows how much the precision of our model is when said that it finds a credit card. A precision near to 1 along training means that most of the detections of the model are correct, with very few false positives.
 
 === **3.2 Recall**
 
@@ -181,7 +181,7 @@ The curve of precision show how much is the precision of our model when said tha
 </div>
 ++++
 
-The curve of recall show ability of our model to identify correctly all positives instances (credit cards) in our data set. A recall near of 1 along the curve means that the model is detecting most of credit cards.
+The curve of recall shows ability of our model to identify correctly all positive instances (credit cards) in our data set. A recall near of 1 along the curve means that the model is detecting most of credit cards.
 
 === **3.3 F1-Score interpretation**
 
@@ -232,11 +232,11 @@ image::val_batch1_pred.jpg[Predictions, 400, 200]
 
 == **4 Conclusions and future work**
 
-The Fine-Tunning of **YOLOv10** for credit cards detections has proven to be succesfull. The results indicate that the model is capable to identify credit card with a high precision.
+The Fine-Tunning of **YOLOv10** for credit cards detections has proven to be succesful. The results indicate that the model is capable to identify credit cards with a high precision.
 
 === **4.1 Improvement areas**
 
-* Improvement the detections of credit cards in video.
+* Improve the detections of credit cards in video.
 * Experiment with different Data Augmentation techniques.
 
 == **5 References**

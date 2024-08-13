@@ -5,3 +5,6 @@
 
 /weigths/groundingdino_swint_ogc.pth
 /weigths/*
+
+.env
+.vscode/
