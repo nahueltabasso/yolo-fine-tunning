@@ -34,8 +34,8 @@ The main flux of this project includes:
 This project uses `pipenv` to manage a python virtual environment and dependencies, or uses `docker` for this task. To set up this environment, follow the steps below 
 
 [source,bash]
-git clone <>
-cd <repository name>
+git clone https://github.com/nahueltabasso/yolo-fine-tunning.git
+cd yolo-fine-tunning
 
 First of all, it is needed to create some directories and download some heights for our models
 
