@@ -18,6 +18,3 @@ print(datasets.list_annotation_runs())
 
 # %%
 datasets.load_annotations(anno_key)
-
-# Ejecutar script
-# python src/fiftyone/fo_load_annotations.py --name dataset-240728 --anno_key fix_ann

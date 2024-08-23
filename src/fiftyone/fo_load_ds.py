@@ -30,14 +30,36 @@ classes = ["credit_card"]
 if fo.dataset_exists(name):
     fo.delete_dataset(name)
 
+# # Load dataset
+# dataset = fo.Dataset(name=name, persistent=True)
+# dataset.add_dir(
+#     dataset_dir=ds_dir,
+#     dataset_type=fo.types.YOLOv5Dataset,
+#     split="train",
+#     classes=classes
+# )
+
 # Load dataset
 dataset = fo.Dataset(name=name, persistent=True)
-dataset.add_dir(
-    dataset_dir=ds_dir,
-    dataset_type=fo.types.YOLOv5Dataset,
-    split="train",
-    classes=classes
-)
+# Iterate through splits
+for split in ["train", "test", "val"]:
+    data_path = os.path.join(ds_dir, f"images/{split}")
+    labels_path = os.path.join(ds_dir, f"labels/{split}")
+    
+    print(f"Processing {split} split:")
+    print(f"Data Path: {data_path}")
+    print(f"Labels Path: {labels_path}")
+    
+    # Load split
+    split_dataset = fo.Dataset.from_dir(
+        dataset_dir=ds_dir,
+        dataset_type=fo.types.YOLOv5Dataset,
+        split=split,
+        classes=classes
+    )
+    
+    # Merge with main dataset
+    dataset.merge_samples(split_dataset)
 
 # Verify classes after load dataset
 print("Dataset Classes:", dataset.default_classes)
@@ -61,5 +83,3 @@ dataset.save()
 # Verify classes again
 print("Saved Dataset Classes:", dataset.default_classes)
 
-# EJECUTAR SCRIPT
-# python src/fiftyone/fo_load_ds.py --name dataset-240728

@@ -52,7 +52,3 @@ while video.isOpened():
 # Release the video capture object and close the display window
 video.release()
 cv2.destroyAllWindows()
-
-# Ejecutar script
-# python src/fine-tunning/inference.py --model /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/runs/detect/train3/weights/best.pt
-# --image /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/fo-dataset-240728/images/test/267.jpg

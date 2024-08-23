@@ -41,7 +41,3 @@ print(f"CLSS - {clss}")
 
 # Display the results
 results[0].show()
-
-# Ejecutar script
-# python src/fine-tunning/inference.py --model /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/runs/detect/train3/weights/best.pt
-# --image /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/fo-dataset-240728/images/test/267.jpg

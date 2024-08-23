@@ -31,5 +31,3 @@ split_dataset(source_dir=export_dir,
               ann_train_dir=export_dir+"/labels/train",
               ann_val_dir=export_dir+"/labels/val",
               ann_test_dir=export_dir+"/labels/test")
-# Ejecutar script
-# python src/fiftyone/fo_export_ds.py --name dataset-240728 --export_dir /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/fo-dataset-240728

@@ -18,6 +18,4 @@ model = YOLO(model_name)
 data = args.data
 model.train(data=data, epochs=100, imgsz=640)
 
-# Ejecutar script
-# python src/fine-tunning/train.py --model /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/models/yolov10n.pt --data /Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/fo-dataset-240728/dataset.yaml
 

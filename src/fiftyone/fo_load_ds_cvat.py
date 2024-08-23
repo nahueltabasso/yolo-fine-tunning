@@ -29,14 +29,18 @@ view.annotate(
     label_field="ground_truth",
     label_type="detections",
     classes=[
-        "_",
-        "background",
-        "credit_card",
+        # "_",
+        "card_number",
+        "cardholder",
+        "expiry_date",
+        "payment_network"
     ],
     image_quality=100,
+    overwrite=True
 )
 print(view.get_annotation_info(anno_key))
 
 
-# Ejecutar script
-# python src/fiftyone/fo_load_ds_cvat.py --name dataset-240728 --anno_key fix_ann --project_name Credit_Card_Dataset_01
+# print(dataset.list_annotation_runs())
+# dataset.delete_annotation_run(anno_key)
+# print(dataset.list_annotation_runs())
