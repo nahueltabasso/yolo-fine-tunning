@@ -2,7 +2,7 @@
 
 == **1 Introduction**
 This report show the processand results about **YOLOv10** Fine-TUnning for credit card element detections on images.
-One of the main objectives of this project was to adapt **YOLOv10** model, that originally has not been trained to detect these elements from a credit card, previously detected by another **YOLOv10** Fine Tunning for this task (more information in link:https://github.com/nahueltabasso/yolo-fine-tunning/blob/main/docs/REPORT.adoc[Credit Card Model Detection]), in this step the task of our fine-tunned model is find and locate the elements of card in different conditions and environments.
+One of the main objectives of this project was to adapt **YOLOv10** model, that originally has not been trained to detect these elements from a credit card, previously detected by another **YOLOv10** Fine Tunning for this task (more information in link:https://github.com/nahueltabasso/yolo-fine-tunning/blob/main/docs/cardDetectionsDocs/REPORT.adoc[Credit Card Model Detection]), in this step the task of our fine-tunned model is find and locate the elements of card in different conditions and environments.
 
 === **1.1 Context of Project**
 This idea for make a fine-tunning of a **YOLO** model is relationed to the intention of improve the performance of this link:https://github.com/nahueltabasso/credit-card-service[Credit-Card-Service V1.0.0] on inference over images.
