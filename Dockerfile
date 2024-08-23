@@ -1,25 +1,36 @@
-FROM python:3.9.6
-ENV N_PROCESSES=1
-ENV DIRECTORY=/opt/project/credit-card-service
-
-RUN mkdir -p ${DIRECTORY}
-
+# FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04
+ENV DIRECTORY=/opt/project
+ENV DEBIAN_FRONTEND="noninteractive"
 WORKDIR ${DIRECTORY}
 
-COPY . ${DIRECTORY}
-RUN apt-get update && apt-get install -y wget
-RUN python -m pip install --upgrade pip
-# Install dependencies from requirements
-RUN pip install -r requirements.txt
-# Install GroundingDINO
-RUN pip install git+https://github.com/IDEA-Research/GroundingDINO.git@df5b48a3efbaa64288d8d0ad09b748ac86f22671
-RUN mkdir weights && \
-    cd weights && \
-    wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y curl wget git vim iputils-ping gcc libpq-dev software-properties-common locales  && \
+    ln -f -s /usr/bin/python3 /usr/bin/python && \
+    echo "es_AR.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen && \
+    locale -a && \
+    export LC_ALL="es_AR.utf8" && \
+    export LC_CTYPE="es_AR.utf8" && \
+    locale -a
 
-RUN cd .. && \
-    python setup.py
+RUN apt install -y libavcodec-dev libavformat-dev libswscale-dev \
+    libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+    libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libjpeg62
+
+
+RUN apt-get install -y curl && \
+    apt-get install -y python3-dev python3-pip python3-setuptools python3-distutils
+
+#RUN mkdir weights && \
+#    cd weights && \
+#    wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
+
+RUN pip install pipenv
+RUN pipenv install --python 3.10.12
+RUN pip install git+https://github.com/IDEA-Research/GroundingDINO.git@df5b48a3efbaa64288d8d0ad09b748ac86f22671
+
+# RUN cd ${DIRECTORY} && pip install -e .
 
 CMD tail -f /dev/null
-
- 
