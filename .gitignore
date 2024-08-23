@@ -8,3 +8,6 @@
 
 .env
 .vscode/
+
+/src/process/__pycache__/*
+weights/*
