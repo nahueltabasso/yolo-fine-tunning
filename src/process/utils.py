@@ -1,6 +1,7 @@
 import os
 import shutil
 import random
+import numpy as np 
 
 def move_files(source_dir, file_list, img_destination, ann_destination):
     for f in file_list:
@@ -57,3 +58,15 @@ def split_dataset(source_dir: str,
                file_list=test_files, 
                img_destination=img_test_dir,
                ann_destination=ann_test_dir)
+    
+def crop_image(img: np.ndarray, coords: list):
+    # Cast coords to int 
+    x1, y1, x2, y2 = map(int, coords)
+    # Make sure the coordinates are 
+    # within the image boundaries.
+    height, width = img.shape[:2]
+    x1, y1 = max(0, x1), max(0, y1)
+    x2, y2 = min(width, x2), min(height, y2)
+    
+    crop_image = img[y1:y2, x1:x2]
+    return crop_image
