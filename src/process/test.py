@@ -1,7 +1,8 @@
 # %%
 import cv2
 import os
-
+import shutil
+# %%
 images = os.listdir("/Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/dataset-240728/dataset-240728/images/train")
 print
 for i in images:
@@ -91,3 +92,23 @@ def plot_confusion_matrix(confusion_matrix, class_labels):
 class_labels = ['Credit Card', 'Object']
 confusion_matrix = np.array([[37, 0], [1, 0]])
 plot_confusion_matrix(confusion_matrix, class_labels)
+
+
+
+# %%
+
+input_dir = "/opt/project/data/dataset-240828/test/Cabal"
+output_dir = "/opt/project/data/dataset-240828/val/Cabal"
+
+images = os.listdir(input_dir)
+images
+# %%
+images = [os.path.join(input_dir, i) for i in images]
+
+images = images[:28]
+
+for i in images:
+    filename = i.split("/")[-1]
+    print(filename)
+    output_path = output_dir + "/" + filename
+    shutil.move(i, output_path)
