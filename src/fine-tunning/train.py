@@ -16,6 +16,4 @@ model = YOLO(model_name)
 
 # Train the model
 data = args.data
-model.train(data=data, epochs=100, imgsz=640)
-
-
+model.train(data=data, epochs=100, imgsz=128, device="mps")
