@@ -1,198 +1,178 @@
 # %%
 from dotenv import load_dotenv
 import numpy as np
-import matplotlib.pyplot as plt
 import os
 import cv2
 import albumentations as A
 
 load_dotenv("../../.env")
 
-def get_ouput_path(path, index):
-    output_path = path + "/" + str(index) + ".jpg"
-    return output_path
-
-# %%
-WORK_PATH = "/opt/project/data/payment-networks/Cabal"
-images = os.listdir(WORK_PATH)
-images = sorted(images, key=lambda x: int(x.split('.')[0]))
-
-# Init count
-max_index = images[len(images)-1]
-max_index = int(max_index.split(".")[0]) + 1
-COUNT = max_index
-print(COUNT)
-
-images = [os.path.join(WORK_PATH, i) for i in images]
-# %%
-# First data augmentation technique: 
-# rotating the images by a random number between 10 and 90
-# images = images[:5]
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
+def get_output_path(path, index):
+    """
+    Generate a full file path for saving an image with a numeric filename.
     
-    # Rotation transformed
-    transform = A.Rotate(limit=(10, 90), p=1.0)
-
-    # Apply transformation
-    augmented = transform(image=img)
-    augmented_image = augmented['image']
-
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, augmented_image)
-    COUNT += 1
+    Args:
+        path (str): The directory path where the image will be saved.
+        index (int): The numeric index to be used as the image's filename.
     
-# %% 
-print(f"COUNT after first technique --- {COUNT}")
+    Returns:
+        str: The complete file path with the image filename in the format "{index}.jpg".
+    """
+    return os.path.join(path, f"{index}.jpg")
 
-# %%
-# Second data augmentation techique:
-# convert to gray scale
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
-    # Convert to gray scale
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, img)
-    COUNT += 1
-
-# %%
-print(f"COUNT after second technique --- {COUNT}")
-
-# %%
-# Third data augmentation technique:
-# horizontal flip
-images = os.listdir(WORK_PATH)
-images = [os.path.join(WORK_PATH, i) for i in images]
-# For this case, use only the first 25 images
-images = images[:25]
-
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
-
-    # Apply horizontal flip
-    img = np.flip(img, axis=1)
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, img)
-    COUNT += 1
+def rotate_image(image, limit=(10, 90)):
+    """
+    Rotate the given image by a random angle within the specified limit.
     
-# %%
-print(f"COUNT after third technique --- {COUNT}")
+    Args:
+        image (numpy.ndarray): The input image to be rotated.
+        limit (tuple): A tuple specifying the range of angles (in degrees) from 
+                       which a random angle will be chosen for the rotation.
+                       
+    Returns:
+        numpy.ndarray: The rotated image.
+    """
+    transform = A.Rotate(limit=limit, p=1.0)
+    return transform(image=image)['image']
 
-# %%
-# Four data augmentation techique:
-# contrast change
-images = os.listdir(WORK_PATH)
-images = [os.path.join(WORK_PATH, i) for i in images]
-# For this case, use only the first 25 images
-images = images[:10]
-
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
-
-    # alpha: Contrast gain factor (1.0 means no change)
-    # beta: Brightness factor (0 means no change)
-    alpha=3.0
-    beta=0
-    adjusted_image = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+def to_grayscale(image):
+    """
+    Convert the given image to grayscale.
     
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, img)
-    COUNT += 1
+    Args:
+        image (numpy.ndarray): The input color image to be converted to grayscale.
+    
+    Returns:
+        numpy.ndarray: The grayscale version of the input image.
+    """
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# %%
-print(f"COUNT after four technique --- {COUNT}")
+def horizontal_flip(image):
+    """
+    Flip the given image across the horizontal axis.
 
-# %%
-# Five data augmentation technique:
-# adding a noice
+    Args:
+        image (numpy.ndarray): The input image to be flipped.
+    
+    Returns:
+        numpy.ndarray: The horizontally flipped image.
+    """
+    return np.flip(image, axis=1)
+
+def change_contrast(image, alpha=3.0, beta=0):
+    """
+    Change the contrast of the given image by adjusting its intensity levels.
+
+    Args:
+        image (numpy.ndarray): The input image whose contrast is to be changed.
+        alpha (float): Contrast control. Must be a positive value. A value greater
+                       than 1 will increase the contrast, while a value between 0 and 1 
+                       will decrease the contrast. Default value is 3.0.
+        beta (int): Brightness control. This value will be added to the pixel values 
+                    after adjusting the contrast. It can be positive or negative. Default
+                    value is 0.
+
+    Returns:
+        numpy.ndarray: The image with adjusted contrast.
+    """
+    return cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+
 def add_gaussian_noise(image, mean=0, var=10):
     """
+    Add Gaussian noise to the given image.
+
+    Args:
+        image (numpy.ndarray): The input image to which Gaussian noise will be added.
+        mean (float): The mean of the Gaussian noise distribution. Default value is 0.
+        var (int): The variance (squared standard deviation) of the Gaussian noise distribution. Default value is 10.
+
+    Returns:
+        numpy.ndarray: The image with added Gaussian noise.
     """
-    # Calculate the standard deviation from the variance
     sigma = var ** 0.5
-    # Create a noise array with the same shape as the image
     gauss = np.random.normal(mean, sigma, image.shape).astype('uint8')
-    # Add noise to the original image
-    noisy_image = cv2.add(image, gauss)
-    return noisy_image
+    return cv2.add(image, gauss)
 
-images = os.listdir(WORK_PATH)
-images = [os.path.join(WORK_PATH, i) for i in images]
-# For this case, use only the first 25 images
-images = images[:25]
-
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
-    img = add_gaussian_noise(img, mean=0, var=2)
-    
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, img)
-    COUNT += 1
-
-
-# Six data augmentation technique:
-# perspective changes
 def apply_perspective_transform(image):
     """
-        Apply a perspective transformation to a image
+    Apply a perspective transform to the given image.
 
-        :param image: input image.
-        :return: transformed image.
-    """
-    # Shape
-    height, width = image.shape[:2]
+    Args:
+        image (numpy.ndarray): The input image to be transformed.
 
-    # Define origin points (four corners of image)
-    src_points = np.float32([
-        [0, 0],              # Top left corner
-        [width - 1, 0],      # Top right corner
-        [0, height - 1],     # Bottom left corner
-        [width - 1, height - 1]  # Bottom right corner
-    ])
-
-    # Define the target points (shifted to distort perspective)
-    dst_points = np.float32([
-        [width * 0.1, height * 0.2],  
-        [width * 0.9, height * 0.1],
-        [width * 0.2, height * 0.8],
-        [width * 0.8, height * 0.9]
-    ])
-
-    # Calculate the perspective transformation matrix
-    matrix = cv2.getPerspectiveTransform(src_points, dst_points)
-
-    # Apply perspective transformation
-    transformed_image = cv2.warpPerspective(image, matrix, (width, height))
-
-    return transformed_image
-
-images = os.listdir(WORK_PATH)
-images = [os.path.join(WORK_PATH, i) for i in images]
-# For this case, use only the first 40 images
-images = images[:25]
-
-# COUNT = 1214
-
-for image in images:
-    print(f"Input Image {image}")
-    img = cv2.imread(filename=image)
-    img = apply_perspective_transform(img)
+    Returns:
+        numpy.ndarray: The image with a perspective transform applied.
     
-    output_path = get_ouput_path(WORK_PATH, COUNT)
-    print(f"Output Image {output_path}")
-    cv2.imwrite(output_path, img)
-    COUNT += 1
+    The function calculates a perspective transform matrix from source points, 
+    which are the corners of the original image, to destination points, which 
+    create a simulated 3D effect by shifting the image corners to new locations. 
+    It then applies this matrix to the input image using the warpPerspective method 
+    from OpenCV.
 
+    The specific transformation applied shifts the corners in an asymmetric way 
+    to create the effect of a change in perspective:
+        - Top-left corner moves to 10% of the width and 20% of the height.
+        - Top-right corner moves to 90% of the width and 10% of the height.
+        - Bottom-left corner moves to 20% of the width and 80% of the height.
+        - Bottom-right corner moves to 80% of the width and 90% of the height.
+    """
+    height, width = image.shape[:2]
+    src_points = np.float32([[0, 0], [width - 1, 0], [0, height - 1], [width - 1, height - 1]])
+    dst_points = np.float32([[width * 0.1, height * 0.2], 
+                             [width * 0.9, height * 0.1], 
+                             [width * 0.2, height * 0.8], 
+                             [width * 0.8, height * 0.9]])
+    matrix = cv2.getPerspectiveTransform(src_points, dst_points)
+    return cv2.warpPerspective(image, matrix, (width, height))
+
+def save_image(output_path, image):
+    cv2.imwrite(output_path, image)
+
+def augment_images(images, augment_fn, count, limit=None):
+    """
+    Apply a given augmentation function to a list of images and save the augmented images.
+
+    Args:
+        images (list): A list of file paths to the input images.
+        augment_fn (function): The augmentation function to be applied to each image. 
+                               This function should take a single argument, the image, 
+                               and return the augmented image.
+        count (int): The starting index for naming the saved augmented images.
+        limit (int, optional): The maximum number of images to process. If None, all images 
+                               in the list are processed. Default is None.
+
+    Returns:
+        int: The updated count after processing the images, which can be used as the starting 
+             index for subsequent augmentations.
+    """
+    for image_path in images[:limit]:
+        img = cv2.imread(image_path)
+        augmented_image = augment_fn(img)
+        output_path = get_output_path(WORK_PATH, count)
+        save_image(output_path, augmented_image)
+        count += 1
+    return count
+
+# %%
+WORK_PATH = os.getenv("DATA_AUGMENTATION_WORK_DIR")
+images = sorted([os.path.join(WORK_PATH, img) for img in os.listdir(WORK_PATH)], key=lambda x: int(os.path.basename(x).split('.')[0]))
+COUNT = int(os.path.basename(images[-1]).split(".")[0]) + 1
+print(f"Initial COUNT: {COUNT}")
+
+# %%
+
+# Define augmentation configurations
+augmentations = [
+    (rotate_image, None),
+    (to_grayscale, None),
+    (horizontal_flip, 25),
+    (change_contrast, 10),
+    (add_gaussian_noise, 25),
+    (apply_perspective_transform, 25)
+]
+
+# Apply augmentations
+for augment_fn, limit in augmentations:
+    COUNT = augment_images(images, augment_fn, COUNT, limit)
+    print(f"COUNT after {augment_fn.__name__} --- {COUNT}")
 

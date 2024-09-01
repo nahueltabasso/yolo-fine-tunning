@@ -97,18 +97,45 @@ plot_confusion_matrix(confusion_matrix, class_labels)
 
 # %%
 
-input_dir = "/opt/project/data/dataset-240828/test/Cabal"
-output_dir = "/opt/project/data/dataset-240828/val/Cabal"
+input_dir = "/Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/dataset-240828/train/Cabal"
+output_dir = "/Users/nahueltabasso/Documents/Python/yolo_fine_tunning/data/dataset-240828/val/Mastercard"
 
 images = os.listdir(input_dir)
-images
+len(images)
+# images
 # %%
 images = [os.path.join(input_dir, i) for i in images]
 
-images = images[:28]
+images = images[:18]
 
 for i in images:
     filename = i.split("/")[-1]
     print(filename)
     output_path = output_dir + "/" + filename
     shutil.move(i, output_path)
+    
+    
+    
+# %%
+import matplotlib.pyplot as plt
+
+cantidad = [274, 173, 177, 185]
+labels = ["VISA", "Mastercard", "American Express", "Cabal"]
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']  # Azul, naranja, verde, rojo
+
+plt.figure(figsize=(10, 6))
+bars = plt.bar(labels, cantidad, width=0.3, color=colors)
+
+plt.title('Credit Cards Distribution after Data Augmentation')
+plt.xlabel('Type of Payment Network')
+plt.ylabel('Amount')
+
+# Añadir etiquetas de cantidad encima de cada barra
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2., height,
+             f'{height}',
+             ha='center', va='bottom')
+
+plt.tight_layout()
+plt.show()
