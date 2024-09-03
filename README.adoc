@@ -1,6 +1,16 @@
 = **YOLO Fine-Tunning and Optimization for Credit Card Detections**
 
-This repository is intended to host the project of Fine-Tunning of **YOLOv10** model to detect credit cards on images. It used **FiftyOne** to manage the annotations and datasets and are integrated with tools such as **CVAT** for the correction of annotations.
+This repository is intended to host the project of Fine-Tunning of **YOLOv10** model. It used **FiftyOne** to manage the annotations and datasets and are integrated with tools such as **CVAT** for the correction of annotations.
+
+This research project is divided into three parts:
+
+1- **YOLOv10** Fine-Tunning to detect credit cards in images.
+
+2- **YOLOv10** Fine-Tunning for the detection of the elements of a credit card (Card Number, Cardholder, Expiry Date, Payment Network).
+
+3- **YOLOv10** Fine-Tunning for the classification of the card payment network.
+
+**Note:** to see the step-by-step process go to link:https://github.com/nahueltabasso/yolo-fine-tunning/blob/main/src/demo/demo.ipynb[Demo]
 
 The main flux of this project includes:
 
